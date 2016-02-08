@@ -1,5 +1,7 @@
 package com.fredaas.entities;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -10,11 +12,12 @@ public abstract class B2DObject {
     
     protected float x;
     protected float y;
-    
     protected World world;
     protected Body body;
     protected FixtureDef fdef;
     protected BodyDef bdef;
+    protected Sprite sprite;
+    protected Texture texture;
     
     public B2DObject() {
         fdef = new FixtureDef();

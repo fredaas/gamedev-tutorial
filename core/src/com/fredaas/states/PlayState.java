@@ -19,7 +19,7 @@ public class PlayState extends GameState {
     private Box2DDebugRenderer dr;
     private MyContactListener cl;
     private Player player;
-    private boolean debug = true;
+    private boolean debug;
     
     public PlayState(GameStateManager gsm) {
         super(gsm);
@@ -55,6 +55,7 @@ public class PlayState extends GameState {
         world.step(1 / 60f, 6, 2);
         
         if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+            player.setAlpha();
             debug = !debug;
         }
         if (debug) {
