@@ -11,7 +11,7 @@ public abstract class GameState {
         this.gsm = gsm;
     }
     
-    public abstract void update();
+    public abstract void update(float dt);
     public abstract void draw(ShapeRenderer sr);
     
 }

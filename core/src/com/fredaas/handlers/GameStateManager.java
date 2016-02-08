@@ -30,8 +30,8 @@ public class GameStateManager {
         }
     }
     
-    public void update() {
-        gs.update();
+    public void update(float dt) {
+        gs.update(dt);
     }
     
     public void draw(ShapeRenderer sr) {
