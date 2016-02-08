@@ -19,6 +19,9 @@ public class Player extends B2DObject {
     
     private float dx;
     private float speed;
+    private float maxSpeed;
+    private float cof; // Coefficient of friction
+    private float cod; // Coefficient of drag
     private float width;
     private float height;
     private float alpha;
@@ -46,7 +49,10 @@ public class Player extends B2DObject {
     private void init() {
         // Fields
         dx = 0;
-        speed = 5;
+        speed = 1;
+        maxSpeed = 8;
+        cof = 0.85f;
+        cod = 0.90f;
         width = 60 / PPM;
         height = 68 / PPM;
         alpha = 1;
@@ -71,18 +77,21 @@ public class Player extends B2DObject {
         
         // Sprites
         sb = new SpriteBatch();
-        texture = new Texture(Gdx.files.internal("sprites/player-idle.png"));
-        idle = TextureRegion.split(texture, 65, 75)[0];
-        texture = new Texture(Gdx.files.internal("sprites/player-run.png"));
-        running = TextureRegion.split(texture, 65, 75)[0];
-        texture = new Texture(Gdx.files.internal("sprites/player-jump.png"));
-        jumping = TextureRegion.split(texture, 65, 75)[0];
-        texture = new Texture(Gdx.files.internal("sprites/player-fall.png"));
-        falling = TextureRegion.split(texture, 65, 75)[0];
+        idle = getTextureRegion("sprites/player-idle.png", 65, 75);
+        running = getTextureRegion("sprites/player-run.png", 65, 75);
+        jumping = getTextureRegion("sprites/player-jump.png", 65, 75);
+        falling = getTextureRegion("sprites/player-fall.png", 65, 75);
         animation = new Animation(idle, "idle");
         sprite = new Sprite(idle[0]);
         sprite.setPosition(x, y);
         sprite.setAlpha(alpha);
+    }
+    
+    private TextureRegion[] getTextureRegion(String path, int width, int height) {
+        return TextureRegion.split(
+                new Texture(Gdx.files.internal(path)), 
+                width, 
+                height)[0];
     }
     
     public void left(boolean b) {
@@ -142,15 +151,25 @@ public class Player extends B2DObject {
     
     @Override
     public void update() {
-        if (left || right) {
-            dx = left ? -speed : speed;
-        }
-        if (jump && onGround) {
-            body.applyForceToCenter(new Vector2(0, 45), true);
-        }
-        body.setLinearVelocity(dx, body.getLinearVelocity().y);
-        dx = 0;
+        dx = body.getLinearVelocity().x;
         
+        if (left || right) {
+            dx += left ? -speed : speed;
+        }
+        if (Math.abs(dx) > maxSpeed) {
+            dx = dx < 0 ? -maxSpeed : maxSpeed;
+        }
+        
+        if (onGround) {
+            dx *= cof;
+            if (jump) {
+                body.applyForceToCenter(new Vector2(0, 45), true);
+            }
+        } else {
+            dx *= cod;
+        }
+        
+        body.setLinearVelocity(dx, body.getLinearVelocity().y);
         sprite.setRegion(animation.getFrame());
         updateSpriteState();
     }
