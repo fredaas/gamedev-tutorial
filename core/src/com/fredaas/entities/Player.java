@@ -59,6 +59,7 @@ public class Player extends B2DObject {
         ps.setAsBox(20 / PPM, 25 / PPM);
         fdef.shape = ps;
         fdef.density = 0.4f;
+        fdef.friction = 0;
         body = PlayState.world.createBody(bdef);
         body.createFixture(fdef);
         
