@@ -49,10 +49,10 @@ public class Player extends B2DObject {
     private void init() {
         // Fields
         dx = 0;
-        speed = 1;
+        speed = 0;
         maxSpeed = 8;
-        cof = 0.85f;
-        cod = 0.90f;
+        cof = 0.80f;
+        cod = 0.95f;
         width = 60 / PPM;
         height = 68 / PPM;
         alpha = 1;
@@ -125,19 +125,16 @@ public class Player extends B2DObject {
             
             if (left || right) {
                 animation.setFrames(running, "running");
-            }
-            else {
+            } else {
                 animation.setFrames(idle, "idle");
             }
-        }
-        else if (!onGround) {
+        } else if (!onGround) {
             animation.setTimerDelay(50);
             
             if (!freeFall) {
                 animation.setFrames(jumping, "jumping");
                 freeFall = animation.isLastFrame();
-            }
-            else {
+            } else {
                 animation.setFrames(falling, "falling");
             }
         }
@@ -153,20 +150,22 @@ public class Player extends B2DObject {
     public void update() {
         dx = body.getLinearVelocity().x;
         
-        if (left || right) {
-            dx += left ? -speed : speed;
-        }
-        if (Math.abs(dx) > maxSpeed) {
-            dx = dx < 0 ? -maxSpeed : maxSpeed;
-        }
-        
         if (onGround) {
             dx *= cof;
+            speed = 1;
             if (jump) {
                 body.applyForceToCenter(new Vector2(0, 45), true);
             }
         } else {
             dx *= cod;
+            speed = 0.25f;
+        }
+        
+        if (left || right) {
+            dx += left ? -speed : speed;
+        }
+        if (Math.abs(dx) > maxSpeed) {
+            dx = dx < 0 ? -maxSpeed : maxSpeed;
         }
         
         body.setLinearVelocity(dx, body.getLinearVelocity().y);
