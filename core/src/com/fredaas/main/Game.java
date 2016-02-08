@@ -6,12 +6,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.fredaas.handlers.GameStateManager;
+import static com.fredaas.handlers.Vars.PPM;
 
 public class Game implements ApplicationListener {
 	
     private static int WIDTH;
     private static int HEIGHT;
-    private static OrthographicCamera cam;
+    public static OrthographicCamera cam;
+    public static OrthographicCamera b2dcam;
     private ShapeRenderer sr;
     private GameStateManager gsm;
     
@@ -19,8 +21,10 @@ public class Game implements ApplicationListener {
 	public void create () {
 	    WIDTH = Gdx.graphics.getWidth();
 	    HEIGHT = Gdx.graphics.getHeight();
-	    cam = new OrthographicCamera(WIDTH, HEIGHT);
-	    cam.setToOrtho(true);
+	    cam = new OrthographicCamera();
+	    cam.setToOrtho(false, WIDTH, HEIGHT);
+	    b2dcam = new OrthographicCamera();
+	    b2dcam.setToOrtho(false, WIDTH / PPM, HEIGHT / PPM);
 	    sr = new ShapeRenderer();
 	    gsm = new GameStateManager();
 	}

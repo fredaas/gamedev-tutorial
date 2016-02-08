@@ -1,57 +1,48 @@
 package com.fredaas.entities;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import static com.fredaas.handlers.Vars.PPM;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
+import com.fredaas.states.PlayState;
 
-public class Player {
+public class Player extends B2DObject {
     
     private float dx;
-    private float dy;
     private float speed;
-    private float maxSpeed;
-    private float inertia;
-    private float x;
-    private float y;
-    
-    private boolean up;
-    private boolean down;
+    private boolean onGround;
+    private boolean jump;
     private boolean left;
     private boolean right;
     
-    public Player(float x, float y) {
-        this.x = x;
-        this.y = y;
+    public Player(float x, float y, World world) {
+        this.x = x / PPM;
+        this.y = y / PPM;
+        this.world = world;
         init();
     }
     
     private void init() {
-        speed = 50;
-        maxSpeed = 500;
-        inertia = 0.95f;
-    }
-    
-    public void update(float dt) {
-        if (left || right) {
-            dx += left ? -speed : speed;
-        }
-        if (up || down) {
-            dy += down ? -speed : speed;
-        }
+        dx = 0;
+        speed = 5;
         
-        if (Math.abs(dx) > maxSpeed) {
-            dx = dx < 0 ? -maxSpeed : maxSpeed;
-        }
-        if (Math.abs(dy) > maxSpeed) {
-            dy = dy < 0 ? -maxSpeed : maxSpeed;
-        }
-        dx = Math.abs(dx) < 1 ? 0 : dx;
-        dy = Math.abs(dy) < 1 ? 0 : dy;
-        dx *= inertia;
-        dy *= inertia;
+        // Body
+        bdef.position.set(x, y);
+        bdef.type = BodyType.DynamicBody;
+        bdef.fixedRotation = true;
+        PolygonShape ps = new PolygonShape();
+        ps.setAsBox(20 / PPM, 20 / PPM);
+        fdef.shape = ps;
+        fdef.density = 0.4f;
+        body = PlayState.world.createBody(bdef);
+        body.createFixture(fdef);
         
-        x += dx * dt;
-        y += dy * dt;
+        // Foot
+        ps.setAsBox(15 / PPM, 5 / PPM, new Vector2(0, -20 / PPM), 0);
+        fdef.shape = ps;
+        fdef.isSensor = true;
+        body.createFixture(fdef).setUserData("foot");
     }
     
     public void left(boolean b) {
@@ -60,18 +51,27 @@ public class Player {
     public void right(boolean b) {
         right = b;
     }
-    public void up(boolean b) {
-        up = b;
+    public void jump(boolean b) {
+        jump = b;
     }
-    public void down(boolean b) {
-        down = b;
+    public void onGround(boolean b) {
+        onGround = b;
     }
     
-    public void draw(ShapeRenderer sr) {
-        sr.setColor(Color.GREEN);
-        sr.begin(ShapeType.Line);
-        sr.circle(x, y, 20);
-        sr.end();
+    @Override
+    public void update() {
+        if (left || right) {
+            dx = left ? -speed : speed;
+        }
+        if (jump && onGround) {
+            body.applyForceToCenter(new Vector2(0, 30), true);
+        }
+        body.setLinearVelocity(dx, body.getLinearVelocity().y);
+        dx = 0;
+    }
+    
+    @Override
+    public void draw() {
     }
 
 }
