@@ -11,10 +11,10 @@ public class DesktopLauncher {
 	    int DEVICE_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
 	    int DEVICE_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-		cfg.width = 800;
-		cfg.height = 600;
+		cfg.width = DEVICE_WIDTH;
+		cfg.height = DEVICE_HEIGHT;
 		cfg.resizable = false;
-		cfg.fullscreen = false;
+		cfg.fullscreen = true;
 		new LwjglApplication(new Game(), cfg);
 	}
 	

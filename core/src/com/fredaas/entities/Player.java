@@ -10,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fredaas.handlers.Animation;
 import com.fredaas.main.Game;
-import com.fredaas.states.PlayState;
 
 public class Player extends B2DObject {
     
@@ -63,7 +62,7 @@ public class Player extends B2DObject {
         fdef.shape = ps;
         fdef.density = 0.4f;
         fdef.friction = 0;
-        body = PlayState.world.createBody(bdef);
+        body = world.createBody(bdef);
         body.createFixture(fdef);
         
         // Foot

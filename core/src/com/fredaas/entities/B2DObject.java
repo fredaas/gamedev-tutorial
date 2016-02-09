@@ -30,7 +30,7 @@ public abstract class B2DObject {
         return body;
     }
     
-    public Vector2 position() {
+    public Vector2 getPosition() {
         return body.getPosition();
     }
     
