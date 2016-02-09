@@ -110,7 +110,7 @@ public class Player extends B2DObject {
         // Set frames
         if (onGround) {
             freeFall = false;
-            animation.setTimerDelay(25);
+            animation.setTimerDelay(20);
             
             if (left || right) {
                 animation.setFrames(running, "running");
