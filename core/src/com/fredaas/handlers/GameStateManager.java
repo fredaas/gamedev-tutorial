@@ -1,5 +1,7 @@
 package com.fredaas.handlers;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.fredaas.states.GameState;
 import com.fredaas.states.PlayState;
@@ -7,6 +9,7 @@ import com.fredaas.states.PlayState;
 public class GameStateManager {
     
     private GameState gs;
+    private boolean pause;
     
     public static enum State {
         PLAY,
@@ -31,7 +34,12 @@ public class GameStateManager {
     }
     
     public void update(float dt) {
-        gs.update(dt);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+            pause = !pause;
+        }
+        if (!pause) {
+            gs.update(dt);
+        }
     }
     
     public void draw(ShapeRenderer sr) {

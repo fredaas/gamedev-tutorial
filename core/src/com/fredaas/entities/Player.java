@@ -1,9 +1,6 @@
 package com.fredaas.entities;
 
 import static com.fredaas.handlers.Vars.PPM;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -51,7 +48,7 @@ public class Player extends B2DObject {
         dx = 0;
         speed = 0;
         maxSpeed = 8;
-        cof = 0.80f;
+        cof = 0.75f;
         cod = 0.95f;
         width = 60 / PPM;
         height = 68 / PPM;
@@ -85,13 +82,6 @@ public class Player extends B2DObject {
         sprite = new Sprite(idle[0]);
         sprite.setPosition(x, y);
         sprite.setAlpha(alpha);
-    }
-    
-    private TextureRegion[] getTextureRegion(String path, int width, int height) {
-        return TextureRegion.split(
-                new Texture(Gdx.files.internal(path)), 
-                width, 
-                height)[0];
     }
     
     public void left(boolean b) {
@@ -128,7 +118,7 @@ public class Player extends B2DObject {
             } else {
                 animation.setFrames(idle, "idle");
             }
-        } else if (!onGround) {
+        } else {
             animation.setTimerDelay(50);
             
             if (!freeFall) {
