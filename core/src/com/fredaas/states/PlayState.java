@@ -1,7 +1,6 @@
 package com.fredaas.states;
 
 import static com.fredaas.handlers.Vars.PPM;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -27,7 +26,6 @@ public class PlayState extends GameState {
     private World world;
     private TiledMapRenderer tmr;
     private TiledMap tm;
-    private B2DObjectProcessor op;
     private Box2DDebugRenderer dr;
     private MyContactListener cl;
     private Player player;
