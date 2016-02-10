@@ -96,13 +96,14 @@ public class B2DObjectProcessor {
         }
     }
     
-    private void setBodyAttributes(Shape shape) {
+    private void setBodyAttributes(Shape shape, String id) {
         bdef.type = BodyType.StaticBody;
         fdef.shape = shape;
+        fdef.restitution = id.equals("tile-bounce") ? 1.1f : 0;
     }
     
     private void createBody(Shape shape, String id) {
-        setBodyAttributes(shape);
+        setBodyAttributes(shape, id);
         world.createBody(bdef).createFixture(fdef).setUserData(id);
     }
     

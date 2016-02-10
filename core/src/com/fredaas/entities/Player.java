@@ -2,7 +2,6 @@ package com.fredaas.entities;
 
 import static com.fredaas.handlers.Vars.PPM;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -32,8 +31,6 @@ public class Player extends B2DObject {
     private TextureRegion[] idle;
     private TextureRegion[] jumping;
     private TextureRegion[] falling;
-    private SpriteBatch sb;
-    
     
     public Player(float x, float y, World world) {
         this.x = x / PPM;
@@ -72,7 +69,6 @@ public class Player extends B2DObject {
         body.createFixture(fdef).setUserData("foot");
         
         // Sprites
-        sb = new SpriteBatch();
         idle = getTextureRegion("sprites/player-idle.png", 65, 75);
         running = getTextureRegion("sprites/player-run.png", 65, 75);
         jumping = getTextureRegion("sprites/player-jump.png", 65, 75);

@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.fredaas.entities.MovingPlatform;
 import com.fredaas.entities.Player;
 import com.fredaas.handlers.B2DObjectProcessor;
 import com.fredaas.handlers.GameStateManager;
@@ -29,6 +30,8 @@ public class PlayState extends GameState {
     private Box2DDebugRenderer dr;
     private MyContactListener cl;
     private Player player;
+    private MovingPlatform platform;
+    private B2DObjectProcessor op;
     private boolean debug;
     
     public PlayState(GameStateManager gsm) {
@@ -44,7 +47,9 @@ public class PlayState extends GameState {
         dr = new Box2DDebugRenderer();
         tm = new TmxMapLoader().load("maps/basic-map.tmx");
         tmr = new OrthogonalTiledMapRenderer(tm);
-        new B2DObjectProcessor(tm, world).loadTileMap("tile-layer");
+        op = new B2DObjectProcessor(tm, world);
+        op.loadTileMap("tile-map");
+        op.loadTileMap("tile-bounce");
         createEntities();
     }
     
@@ -52,10 +57,20 @@ public class PlayState extends GameState {
         for (MapObject obj : tm.getLayers().get("player").getObjects()) {
             createPlayer((EllipseMapObject) obj);
         }
+        for (MapObject obj : tm.getLayers().get("dy-platform").getObjects()) {
+            createPlatform((EllipseMapObject) obj);
+        }
     }
     
     private void createPlayer(EllipseMapObject obj) {
         player = new Player(
+                obj.getEllipse().x, 
+                obj.getEllipse().y,
+                world);
+    }
+    
+    private void createPlatform(EllipseMapObject obj) {
+        platform = new MovingPlatform(
                 obj.getEllipse().x, 
                 obj.getEllipse().y,
                 world);
@@ -78,6 +93,7 @@ public class PlayState extends GameState {
         handlePlayerMovement();
         
         player.update();
+        platform.update();
         
         world.step(1 / 60f, 6, 2);
         
@@ -96,6 +112,7 @@ public class PlayState extends GameState {
     @Override
     public void draw(ShapeRenderer sr) {
         player.draw();
+        platform.draw();
     }
 
 }
