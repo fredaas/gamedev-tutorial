@@ -1,5 +1,7 @@
 package com.fredaas.entities;
 
+import static com.fredaas.handlers.Vars.PPM;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -22,11 +24,13 @@ public abstract class B2DObject {
     protected Sprite sprite;
     protected Texture texture;
     protected SpriteBatch sb;
+    protected float alpha;
     
     public B2DObject() {
         fdef = new FixtureDef();
         bdef = new BodyDef();
         sb = new SpriteBatch();
+        alpha = 1;
     }
     
     public Body getBody() {
@@ -35,6 +39,17 @@ public abstract class B2DObject {
     
     public Vector2 getPosition() {
         return body.getPosition();
+    }
+    
+    protected void updateSpritePosition(float xOffset, float yOffset) {
+        sprite.setPosition(
+                (body.getPosition().x + xOffset) * PPM,
+                (body.getPosition().y + yOffset) * PPM);
+    }
+    
+    public void setAlpha() {
+        alpha = alpha == 1 ? 0 : 1;
+        sprite.setAlpha(alpha);
     }
     
     protected TextureRegion[] getTextureRegion(String path, int width, int height) {

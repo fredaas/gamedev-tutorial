@@ -99,6 +99,7 @@ public class PlayState extends GameState {
         
         if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
             player.setAlpha();
+            platform.setAlpha();
             debug = !debug;
         }
         if (debug) {

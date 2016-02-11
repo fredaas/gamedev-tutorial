@@ -49,12 +49,6 @@ public class MovingPlatform extends B2DObject {
         sprite = new Sprite(texture);
     }
     
-    private void updateSpritePosition() {
-        sprite.setPosition(
-                (body.getPosition().x - (width + 1 / PPM)) * PPM,
-                (body.getPosition().y - (height + 1 / PPM)) * PPM);
-    }
-
     @Override
     public void update() {
         timerDiff = (System.nanoTime() - timer) / 1000000;
@@ -68,7 +62,7 @@ public class MovingPlatform extends B2DObject {
     @Override
     public void draw() {
         sb.setProjectionMatrix(Game.cam.combined);
-        updateSpritePosition();
+        updateSpritePosition(-width - 1 / PPM, -height - 1 / PPM);
         sb.begin();
         sprite.draw(sb);
         sb.end();

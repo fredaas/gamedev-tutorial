@@ -19,7 +19,6 @@ public class Player extends B2DObject {
     private float cod; // Coefficient of drag
     private float width;
     private float height;
-    private float alpha;
     private boolean onGround;
     private boolean jump;
     private boolean left;
@@ -48,7 +47,6 @@ public class Player extends B2DObject {
         cod = 0.95f;
         width = 60 / PPM;
         height = 68 / PPM;
-        alpha = 1;
         
         // Body
         bdef.position.set(x, y);
@@ -91,10 +89,6 @@ public class Player extends B2DObject {
     public void onGround(boolean b) {
         onGround = b;
     }
-    public void setAlpha() {
-        alpha = alpha == 1 ? 0 : 1;
-        sprite.setAlpha(alpha);
-    }
     
     private void updateSpriteState() {
         // Set direction
@@ -123,12 +117,6 @@ public class Player extends B2DObject {
                 animation.setFrames(falling, "falling");
             }
         }
-    }
-    
-    private void updateSpritePosition() {
-        sprite.setPosition(
-                (body.getPosition().x - width / 2) * PPM,
-                (body.getPosition().y - height / 2 + 5 / PPM) * PPM);
     }
     
     @Override
@@ -161,7 +149,7 @@ public class Player extends B2DObject {
     @Override
     public void draw() {
         sb.setProjectionMatrix(Game.cam.combined);
-        updateSpritePosition();
+        updateSpritePosition(-width / 2, -height / 2 + 5 / PPM);
         sb.begin();
         sprite.draw(sb);
         sb.end();
