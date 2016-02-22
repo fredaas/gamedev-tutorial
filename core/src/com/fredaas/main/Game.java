@@ -10,8 +10,8 @@ import static com.fredaas.handlers.Vars.PPM;
 
 public class Game implements ApplicationListener {
 	
-    private static int WIDTH;
-    private static int HEIGHT;
+    public static int WIDTH;
+    public static int HEIGHT;
     public static OrthographicCamera cam;
     public static OrthographicCamera b2dcam;
     private ShapeRenderer sr;

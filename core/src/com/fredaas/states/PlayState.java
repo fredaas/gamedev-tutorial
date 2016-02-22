@@ -1,8 +1,11 @@
 package com.fredaas.states;
 
 import static com.fredaas.handlers.Vars.PPM;
+import java.text.DecimalFormat;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
@@ -32,6 +35,9 @@ public class PlayState extends GameState {
     private Player player;
     private MovingPlatform platform;
     private B2DObjectProcessor op;
+    private Vector3 worldCoord;
+    private Vector3 screenCoord;
+    private DecimalFormat df;
     private boolean debug;
     
     public PlayState(GameStateManager gsm) {
@@ -40,20 +46,38 @@ public class PlayState extends GameState {
     }
     
     private void init() {
+        loadB2DWorld();
+        loadTiledStructures();
+        loadEntities();
+        loadFonts();
+        worldCoord = new Vector3();
+        screenCoord = new Vector3();
+        df = new DecimalFormat("#");
+    }
+    
+    private void loadB2DWorld() {
         Box2D.init();
         cl = new MyContactListener();
         world = new World(new Vector2(0, -20), true);
         world.setContactListener(cl);
         dr = new Box2DDebugRenderer();
+    }
+    
+    private void loadTiledStructures() {
         tm = new TmxMapLoader().load("maps/basic-map.tmx");
         tmr = new OrthogonalTiledMapRenderer(tm);
         op = new B2DObjectProcessor(tm, world);
         op.loadTileMap("tile-map");
         op.loadTileMap("tile-bounce");
-        createEntities();
     }
     
-    private void createEntities() {
+    private void loadFonts() {
+        sb = new SpriteBatch();
+        gl = new GlyphLayout();
+        bmf = loadFont("fonts/bmf.ttf", 40);
+    }
+    
+    private void loadEntities() {
         for (MapObject obj : tm.getLayers().get("player").getObjects()) {
             createPlayer((EllipseMapObject) obj);
         }
@@ -83,6 +107,19 @@ public class PlayState extends GameState {
         player.onGround(cl.isPlayerOnGround());
     }
     
+    private void updateMouseCoords() {
+        worldCoord.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+        screenCoord.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+        Game.b2dcam.unproject(worldCoord);
+    }
+    
+    private void drawMouseCoords() {
+        gl.setText(bmf, df.format(worldCoord.x * PPM) + " " + df.format(worldCoord.y * PPM));
+        bmf.draw(sb, gl, 20, Game.HEIGHT - gl.height);
+        gl.setText(bmf, df.format(screenCoord.x) + " " + df.format(screenCoord.y));
+        bmf.draw(sb, gl, 20, Game.HEIGHT - gl.height - 30);
+    }
+    
     @Override
     public void update(float dt) {
         Game.cam.position.set(new Vector3(player.getPosition().scl(PPM), 0));
@@ -91,6 +128,7 @@ public class PlayState extends GameState {
         Game.b2dcam.update();
         
         handlePlayerMovement();
+        updateMouseCoords();
         
         player.update();
         platform.update();
@@ -114,6 +152,10 @@ public class PlayState extends GameState {
     public void draw(ShapeRenderer sr) {
         player.draw();
         platform.draw();
+        
+        sb.begin();
+        drawMouseCoords();
+        sb.end();
     }
 
 }
