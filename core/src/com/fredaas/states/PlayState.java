@@ -78,10 +78,8 @@ public class PlayState extends GameState {
     }
     
     private void loadEntities() {
-        for (MapObject obj : tm.getLayers().get("player").getObjects()) {
-            createPlayer((EllipseMapObject) obj);
-        }
-        for (MapObject obj : tm.getLayers().get("dy-platform").getObjects()) {
+        createPlayer((EllipseMapObject) tm.getLayers().get("player").getObjects().get("player"));
+        for (MapObject obj : tm.getLayers().get("platform").getObjects()) {
             createPlatform((EllipseMapObject) obj);
         }
     }

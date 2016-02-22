@@ -7,11 +7,11 @@
   <properties>
    <property name="ignore" value=""/>
   </properties>
-  <object id="1" x="129.21" y="322.667" width="31.0922" height="31.0922">
+  <object id="1" name="player" x="129.21" y="322.667" width="31.0922" height="31.0922">
    <ellipse/>
   </object>
  </objectgroup>
- <objectgroup name="dy-platform">
+ <objectgroup name="platform">
   <object id="2" x="1152.97" y="1536.97" width="31.0303" height="31.0303">
    <ellipse/>
   </object>
