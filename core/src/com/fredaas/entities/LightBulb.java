@@ -30,7 +30,7 @@ public class LightBulb extends B2DObject {
     public void setPosition(float x, float y) {
         Vector2 pos = new Vector2(x, y);
         pos.sub(body.getPosition());
-        speed = pos.len() < radius ? 0 : 2;
+        speed = pos.len() < radius ? 0 : pos.len();
         body.setLinearVelocity(pos.nor().scl(speed));
     }
 
