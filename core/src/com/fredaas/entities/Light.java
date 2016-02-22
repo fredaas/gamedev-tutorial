@@ -17,10 +17,10 @@ public class Light {
 
     public Light(float x, float y, Color color, RayHandler rh) {
         super();
-        this.rh = rh;
         this.x = x;
         this.y = y;
         this.color = color;
+        this.rh = rh;
         init();
     }
     

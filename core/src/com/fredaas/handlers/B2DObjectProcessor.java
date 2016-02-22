@@ -99,7 +99,7 @@ public class B2DObjectProcessor {
     private void setBodyAttributes(Shape shape, String id) {
         bdef.type = BodyType.StaticBody;
         fdef.shape = shape;
-        fdef.restitution = id.equals("tile-bounce") ? 1.1f : 0;
+        fdef.restitution = id.equals("tile-bounce") ? 1.05f : 0;
     }
     
     private void createBody(Shape shape, String id) {

@@ -2,6 +2,7 @@ package com.fredaas.states;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
@@ -13,7 +14,6 @@ import com.fredaas.entities.LightBulb;
 import com.fredaas.handlers.B2DObjectProcessor;
 import com.fredaas.handlers.GameStateManager;
 import com.fredaas.main.Game;
-
 import box2dLight.RayHandler;
 
 public class LightState extends GameState {
@@ -51,8 +51,22 @@ public class LightState extends GameState {
     
     private void loadLight() {
         rh = new RayHandler(world);
-        lb = new LightBulb(world);
-        light = new Light(0, 0, new Color(0, 100, 0, 1), rh);
+        createLightBulb();
+        createLight();
+    }
+    
+    private void createLightBulb() {
+        EllipseMapObject obj = (EllipseMapObject) 
+                tm.getLayers().get("light").getObjects().get("light");
+        lb = new LightBulb(
+                obj.getEllipse().x, 
+                obj.getEllipse().y,
+                world);
+    }
+    
+    private void createLight() {
+        light = new Light(
+                lb.getPosition().x, lb.getPosition().y, new Color(0, 100, 0, 1), rh);
         light.attachTo(lb.getBody());
     }
     
