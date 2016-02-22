@@ -79,7 +79,7 @@
   <properties>
    <property name="ignore" value=""/>
   </properties>
-  <object id="55" name="light" x="1068" y="786" width="21" height="21">
+  <object id="55" name="light" x="1744" y="250" width="21" height="21">
    <ellipse/>
   </object>
  </objectgroup>
