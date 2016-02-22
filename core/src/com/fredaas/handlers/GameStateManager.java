@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.fredaas.states.GameState;
+import com.fredaas.states.LightState;
 import com.fredaas.states.PlayState;
 
 public class GameStateManager {
@@ -13,8 +14,7 @@ public class GameStateManager {
     
     public static enum State {
         PLAY,
-        MENU,
-        GAMEOVER;
+        LIGHT,
     }
     
     public GameStateManager() {
@@ -26,10 +26,17 @@ public class GameStateManager {
             case PLAY:
                 gs = new PlayState(this);
                 break;
-            case MENU:
+            case LIGHT:
+                gs = new LightState(this);
                 break;
-            case GAMEOVER:
-                break;
+        }
+    }
+    
+    private void selectNewState() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
+            setState(State.PLAY);
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
+            setState(State.LIGHT);
         }
     }
     
@@ -39,6 +46,7 @@ public class GameStateManager {
         }
         if (!pause) {
             gs.update(dt);
+            selectNewState();
         }
     }
     
