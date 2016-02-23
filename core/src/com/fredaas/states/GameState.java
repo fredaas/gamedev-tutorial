@@ -1,9 +1,7 @@
 package com.fredaas.states;
 
 import static com.fredaas.handlers.Vars.PPM;
-
 import java.text.DecimalFormat;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -33,14 +31,14 @@ public abstract class GameState {
     private void init() {
         sb = new SpriteBatch();
         gl = new GlyphLayout();
-        bmf = loadFont("fonts/bmf.ttf", 40);
+        bmf = loadFont("fonts/bmf.ttf", 25);
         worldCoord = new Vector3();
         screenCoord = new Vector3();
         df = new DecimalFormat("#");
     }
     
-    public abstract void update(float dt);
-    public abstract void draw(ShapeRenderer sr);
+    public abstract void update();
+    public abstract void draw(ShapeRenderer sr, float dt);
     
     protected void updateMouseCoords() {
         worldCoord.set(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -49,13 +47,13 @@ public abstract class GameState {
     }
     
     protected void drawMouseCoords() {
-        gl.setText(bmf, df.format(worldCoord.x * PPM) + " " + df.format(worldCoord.y * PPM));
+        gl.setText(bmf, "POS-WORLD: " + df.format(worldCoord.x * PPM) + " " + df.format(worldCoord.y * PPM));
         bmf.draw(sb, gl, 20, Game.HEIGHT - gl.height);
-        gl.setText(bmf, df.format(screenCoord.x) + " " + df.format(screenCoord.y));
+        gl.setText(bmf, "POS-SCREEN: " + df.format(screenCoord.x) + " " + df.format(screenCoord.y));
         bmf.draw(sb, gl, 20, Game.HEIGHT - gl.height - 30);
     }
     
-    protected BitmapFont loadFont(String path, int size) {
+    private BitmapFont loadFont(String path, int size) {
         FreeTypeFontParameter par = new FreeTypeFontParameter();
         FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(path));
         par.size = size;

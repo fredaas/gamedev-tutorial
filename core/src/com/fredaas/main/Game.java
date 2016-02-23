@@ -13,6 +13,7 @@ public class Game implements ApplicationListener {
     public static int WIDTH;
     public static int HEIGHT;
     public static OrthographicCamera cam;
+    public static OrthographicCamera hudcam;
     public static OrthographicCamera b2dcam;
     private ShapeRenderer sr;
     private GameStateManager gsm;
@@ -25,6 +26,8 @@ public class Game implements ApplicationListener {
 	    cam.setToOrtho(false, WIDTH, HEIGHT);
 	    b2dcam = new OrthographicCamera();
 	    b2dcam.setToOrtho(false, WIDTH / PPM, HEIGHT / PPM);
+	    hudcam = new OrthographicCamera();
+        hudcam.setToOrtho(false, WIDTH, HEIGHT);
 	    sr = new ShapeRenderer();
 	    gsm = new GameStateManager();
 	}
@@ -33,8 +36,8 @@ public class Game implements ApplicationListener {
 	public void render () {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		gsm.update(Gdx.graphics.getDeltaTime());
-		gsm.draw(sr);
+		gsm.update();
+		gsm.draw(sr, Gdx.graphics.getDeltaTime());
 	}
 
     @Override

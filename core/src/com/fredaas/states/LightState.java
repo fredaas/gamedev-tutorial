@@ -70,7 +70,7 @@ public class LightState extends GameState {
         light.attachTo(lb.getBody());
     }
     
-    public void update(float dt) {
+    public void update() {
         rh.setCombinedMatrix(Game.b2dcam);
         rh.updateAndRender();
         
@@ -86,7 +86,7 @@ public class LightState extends GameState {
         lb.setPosition(worldCoord.x, worldCoord.y);
     }
 
-    public void draw(ShapeRenderer sr) {
+    public void draw(ShapeRenderer sr, float dt) {
         sb.begin();
         drawMouseCoords();
         sb.end();

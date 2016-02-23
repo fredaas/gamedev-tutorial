@@ -3,8 +3,6 @@ package com.fredaas.states;
 import static com.fredaas.handlers.Vars.PPM;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
@@ -44,10 +42,9 @@ public class PlayState extends GameState {
         loadBox2DWorld(0, -20);
         loadTiledStructures();
         loadEntities();
-        loadFonts();
     }
     
-    protected void loadBox2DWorld(float x, float y) {
+    private void loadBox2DWorld(float x, float y) {
         Box2D.init();
         cl = new MyContactListener();
         world = new World(new Vector2(x, y), true);
@@ -61,12 +58,6 @@ public class PlayState extends GameState {
         op = new B2DObjectProcessor(tm, world);
         op.loadTileMap("tile-map");
         op.loadTileMap("tile-bounce");
-    }
-    
-    private void loadFonts() {
-        sb = new SpriteBatch();
-        gl = new GlyphLayout();
-        bmf = loadFont("fonts/bmf.ttf", 40);
     }
     
     private void loadEntities() {
@@ -98,19 +89,12 @@ public class PlayState extends GameState {
     }
     
     @Override
-    public void update(float dt) {
+    public void update() {
         Game.cam.position.set(player.getPosition().scl(PPM), 0);
         Game.cam.update();
         Game.b2dcam.position.set(player.getPosition(), 0);
         Game.b2dcam.update();
-        
-        handlePlayerMovement();
         updateMouseCoords();
-        
-        player.update();
-        platform.update();
-        
-        world.step(1 / 60f, 6, 2);
         
         if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
             player.setAlpha();
@@ -123,13 +107,18 @@ public class PlayState extends GameState {
             tmr.setView(Game.cam);
             tmr.render();
         }
+        
+        player.update();
+        platform.update();
+        world.step(1 / 60f, 6, 2);
+        handlePlayerMovement();
     }
     
     @Override
-    public void draw(ShapeRenderer sr) {
+    public void draw(ShapeRenderer sr, float dt) {
         player.draw();
         platform.draw();
-        
+        sb.setProjectionMatrix(Game.hudcam.combined);
         sb.begin();
         drawMouseCoords();
         sb.end();

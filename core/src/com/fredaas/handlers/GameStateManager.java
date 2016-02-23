@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.fredaas.states.GameState;
 import com.fredaas.states.LightState;
+import com.fredaas.states.ParticleState;
 import com.fredaas.states.PlayState;
 
 public class GameStateManager {
@@ -15,6 +16,7 @@ public class GameStateManager {
     public static enum State {
         PLAY,
         LIGHT,
+        PARTICLE;
     }
     
     public GameStateManager() {
@@ -29,6 +31,8 @@ public class GameStateManager {
             case LIGHT:
                 gs = new LightState(this);
                 break;
+            case PARTICLE:
+                gs = new ParticleState(this);
         }
     }
     
@@ -37,21 +41,23 @@ public class GameStateManager {
             setState(State.PLAY);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
             setState(State.LIGHT);
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
+            setState(State.PARTICLE);
         }
     }
     
-    public void update(float dt) {
+    public void update() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             pause = !pause;
         }
         if (!pause) {
-            gs.update(dt);
+            gs.update();
             selectNewState();
         }
     }
     
-    public void draw(ShapeRenderer sr) {
-        gs.draw(sr);
+    public void draw(ShapeRenderer sr, float dt) {
+        gs.draw(sr, dt);
     }
 
 }
