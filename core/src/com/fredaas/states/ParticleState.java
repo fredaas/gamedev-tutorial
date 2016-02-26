@@ -44,7 +44,7 @@ public class ParticleState extends GameState {
     }
     
     private void drawParticleInfo() {
-        gl.setText(bmf, "POS-SCREEN: " + df.format(screenCoord.x) + " " + df.format(screenCoord.y));
+        gl.setText(bmf, "POS-SCREEN: " + df.format(Gdx.input.getX()) + " " + df.format(Gdx.input.getY()));
         bmf.draw(sb, gl, 20, Game.HEIGHT - gl.height);
         gl.setText(bmf, "ACTIVE: " + effects.size());
         bmf.draw(sb, gl, 20, Game.HEIGHT - gl.height - 30);
