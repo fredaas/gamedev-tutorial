@@ -1,3 +1,3 @@
-### Abakus GameDev tutorial
+# libGDX Demo
 
-Some information will be written here. I promise.
+Basic demo showing some of the things you can accomplish by combining the libGDX Java game library and the Tiled map editor.
